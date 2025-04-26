@@ -1,7 +1,8 @@
-
-import { CopilotMetrics } from "@/types/github";
+import { CopilotMetrics, CopilotDetailedMetrics } from "@/types/github";
 import MetricCard from "./MetricCard";
 import CompletionsChart from "./CompletionsChart";
+import CopilotDailyUsage from "./CopilotDailyUsage";
+import IDEUsageMetrics from "./IDEUsageMetrics";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Github, Users, Database, Server } from "lucide-react";
@@ -10,13 +11,13 @@ import { ptBR } from "date-fns/locale";
 
 interface DashboardProps {
   metrics: CopilotMetrics;
+  detailedMetrics?: CopilotDetailedMetrics[];
   organization: string;
   onBack: () => void;
   isDemo?: boolean;
 }
 
-const Dashboard = ({ metrics, organization, onBack, isDemo = false }: DashboardProps) => {
-  // Use a safe date parsing to avoid invalid time value errors
+const Dashboard = ({ metrics, detailedMetrics = [], organization, onBack, isDemo = false }: DashboardProps) => {
   const lastUpdated = new Date(metrics.last_updated_at);
   let timeAgo = "";
   
@@ -72,7 +73,16 @@ const Dashboard = ({ metrics, organization, onBack, isDemo = false }: DashboardP
         />
       </div>
 
-      <CompletionsChart metrics={metrics} />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <CompletionsChart metrics={metrics} />
+        {isDemo && detailedMetrics.length > 0 && <CopilotDailyUsage data={detailedMetrics} />}
+      </div>
+
+      {isDemo && detailedMetrics.length > 0 && (
+        <div className="grid grid-cols-1 gap-4">
+          <IDEUsageMetrics data={detailedMetrics} />
+        </div>
+      )}
     </div>
   );
 };

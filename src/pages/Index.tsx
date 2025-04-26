@@ -1,15 +1,16 @@
-
 import { useState } from "react";
 import SettingsForm from "@/components/SettingsForm";
 import Dashboard from "@/components/Dashboard";
-import { GitHubSettings, CopilotMetrics } from "@/types/github";
+import { GitHubSettings, CopilotMetrics, CopilotDetailedMetrics } from "@/types/github";
 import { fetchCopilotMetrics } from "@/services/githubService";
 import { useToast } from "@/components/ui/use-toast";
 import { Users, Database, Server } from "lucide-react";
+import { mockDetailedData } from "@/services/mockData";
 
 const Index = () => {
   const [settings, setSettings] = useState<GitHubSettings | null>(null);
   const [metrics, setMetrics] = useState<CopilotMetrics | null>(null);
+  const [detailedMetrics, setDetailedMetrics] = useState<CopilotDetailedMetrics[]>([]);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
@@ -18,6 +19,9 @@ const Index = () => {
     try {
       const data = await fetchCopilotMetrics(newSettings);
       setMetrics(data);
+      if (newSettings.useDemo) {
+        setDetailedMetrics(mockDetailedData);
+      }
       setSettings(newSettings);
       toast({
         title: newSettings.useDemo 
@@ -45,6 +49,7 @@ const Index = () => {
   const handleBack = () => {
     setSettings(null);
     setMetrics(null);
+    setDetailedMetrics([]);
   };
 
   return (
@@ -102,6 +107,7 @@ const Index = () => {
       ) : (
         <Dashboard 
           metrics={metrics} 
+          detailedMetrics={detailedMetrics}
           organization={settings?.organization || ""} 
           onBack={handleBack}
           isDemo={settings?.useDemo || false}
