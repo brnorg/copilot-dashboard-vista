@@ -5,6 +5,7 @@ import Dashboard from "@/components/Dashboard";
 import { GitHubSettings, CopilotMetrics } from "@/types/github";
 import { fetchCopilotMetrics } from "@/services/githubService";
 import { useToast } from "@/components/ui/use-toast";
+import { Users, Database, Server } from "lucide-react";
 
 const Index = () => {
   const [settings, setSettings] = useState<GitHubSettings | null>(null);
