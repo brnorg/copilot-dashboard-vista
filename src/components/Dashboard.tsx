@@ -12,11 +12,20 @@ interface DashboardProps {
   metrics: CopilotMetrics;
   organization: string;
   onBack: () => void;
+  isDemo?: boolean;
 }
 
-const Dashboard = ({ metrics, organization, onBack }: DashboardProps) => {
+const Dashboard = ({ metrics, organization, onBack, isDemo = false }: DashboardProps) => {
+  // Use a safe date parsing to avoid invalid time value errors
   const lastUpdated = new Date(metrics.last_updated_at);
-  const timeAgo = formatDistanceToNow(lastUpdated, { addSuffix: true, locale: ptBR });
+  let timeAgo = "";
+  
+  try {
+    timeAgo = formatDistanceToNow(lastUpdated, { addSuffix: true, locale: ptBR });
+  } catch (error) {
+    console.error("Erro ao formatar data:", error);
+    timeAgo = "data indisponível";
+  }
   
   return (
     <div className="container mx-auto p-4 space-y-6">
@@ -34,6 +43,7 @@ const Dashboard = ({ metrics, organization, onBack }: DashboardProps) => {
           <h1 className="text-2xl md:text-3xl font-bold flex items-center">
             <Github className="mr-2 h-6 w-6 text-github-blue" />
             {organization}
+            {isDemo && <span className="ml-2 text-sm bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md">Demo</span>}
           </h1>
           <p className="text-muted-foreground">
             Última atualização: {timeAgo}

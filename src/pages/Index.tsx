@@ -20,8 +20,12 @@ const Index = () => {
       setMetrics(data);
       setSettings(newSettings);
       toast({
-        title: "Conectado com sucesso",
-        description: `Dados obtidos para a organização ${newSettings.organization}`,
+        title: newSettings.useDemo 
+          ? "Modo de demonstração ativado" 
+          : "Conectado com sucesso",
+        description: newSettings.useDemo 
+          ? "Usando dados de demonstração" 
+          : `Dados obtidos para a organização ${newSettings.organization}`,
       });
     } catch (error) {
       let errorMessage = "Falha ao conectar com a API do GitHub";
@@ -99,7 +103,8 @@ const Index = () => {
         <Dashboard 
           metrics={metrics} 
           organization={settings?.organization || ""} 
-          onBack={handleBack} 
+          onBack={handleBack}
+          isDemo={settings?.useDemo || false}
         />
       )}
     </div>

@@ -1,7 +1,13 @@
 
 import { CopilotMetrics, GitHubSettings } from "@/types/github";
+import { getMockCopilotMetrics } from "./mockData";
 
 export const fetchCopilotMetrics = async (settings: GitHubSettings): Promise<CopilotMetrics> => {
+  // Return mock data if demo mode is enabled
+  if (settings.useDemo) {
+    return getMockCopilotMetrics();
+  }
+  
   try {
     const response = await fetch(`https://api.github.com/orgs/${settings.organization}/copilot/metrics`, {
       headers: {
