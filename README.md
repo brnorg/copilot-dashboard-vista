@@ -4,6 +4,8 @@
 
 **URL**: https://lovable.dev/projects/1fd4f256-207d-4e8e-9f48-d320b3b0d045
 
+https://preview--copilot-dashboard-vista.lovable.app/
+
 ## How can I edit this code?
 
 There are several ways of editing your application.
