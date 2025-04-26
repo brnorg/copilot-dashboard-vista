@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CopilotDetailedMetrics } from "@/types/github";
-import { Vscode, Neovim } from "lucide-react";
+import { Code, Terminal } from "lucide-react"; // Replace Vscode and Neovim
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 interface IDEUsageMetricsProps {
@@ -15,9 +15,9 @@ const IDEUsageMetrics = ({ data }: IDEUsageMetricsProps) => {
   const getIconForEditor = (editorName: string) => {
     switch (editorName.toLowerCase()) {
       case 'vscode':
-        return <Vscode className="h-4 w-4" />;
+        return <Code className="h-4 w-4" />;
       case 'neovim':
-        return <Neovim className="h-4 w-4" />;
+        return <Terminal className="h-4 w-4" />; // Using Terminal as a replacement for Neovim
       default:
         return null;
     }
